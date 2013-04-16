@@ -58,7 +58,17 @@ void ReplaceSystemMalloc() {
 // ---------------------- Replacement functions ---------------- {{{1
 using namespace __asan;  // NOLINT
 
+const uptr kCallocPoolSize = 1024;
+static uptr calloc_memory_for_dlsym[kCallocPoolSize];
+static uptr allocated;
+
 INTERCEPTOR(void, free, void *ptr) {
+  if (ptr >= calloc_memory_for_dlsym &&
+      ptr < calloc_memory_for_dlsym + kCallocPoolSize)
+  {
+      // Hack: memory was allocated by calloc before REAL(call) is retrieved.
+      return;
+  }
   GET_STACK_TRACE_HERE_FOR_FREE(ptr);
   asan_free(ptr, &stack);
 }
@@ -76,9 +86,6 @@ INTERCEPTOR(void*, malloc, uptr size) {
 INTERCEPTOR(void*, calloc, uptr nmemb, uptr size) {
   if (!asan_inited) {
     // Hack: dlsym calls calloc before REAL(calloc) is retrieved from dlsym.
-    const uptr kCallocPoolSize = 1024;
-    static uptr calloc_memory_for_dlsym[kCallocPoolSize];
-    static uptr allocated;
     uptr size_in_words = ((nmemb * size) + kWordSize - 1) / kWordSize;
     void *mem = (void*)&calloc_memory_for_dlsym[allocated];
     allocated += size_in_words;
