@@ -107,6 +107,8 @@ class AsanThread {
   AsanThreadLocalMallocStorage &malloc_storage() { return malloc_storage_; }
   AsanStats &stats() { return stats_; }
 
+  static void destroyDead(void);
+
  private:
   AsanThread() : unwinding(false) {}
   void SetThreadStackAndTls();
@@ -128,6 +130,8 @@ class AsanThread {
   AsanThreadLocalMallocStorage malloc_storage_;
   AsanStats stats_;
   bool unwinding;
+
+  int  id_;
 };
 
 // ScopedUnwinding is a scope for stacktracing member of a context

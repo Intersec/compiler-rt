@@ -27,6 +27,8 @@
 #include "sanitizer_common/sanitizer_symbolizer.h"
 #include "lsan/lsan_common.h"
 
+#include <pthread.h>
+
 int __asan_option_detect_stack_use_after_return;  // Global interface symbol.
 
 namespace __asan {
@@ -550,6 +552,7 @@ void __asan_init() {
   InitTlsSize();
 
   // Create main thread.
+  pthread_atfork(0, 0, AsanThread::destroyDead);
   AsanThread *main_thread = AsanThread::Create(0, 0);
   CreateThreadContextArgs create_main_args = { main_thread, 0 };
   u32 main_tid = asanThreadRegistry().CreateThread(
@@ -567,6 +570,6 @@ void __asan_init() {
 #endif  // CAN_SANITIZE_LEAKS
 
   if (common_flags()->verbosity) {
-    Report("AddressSanitizer Init done\n");
+    Report("AddressSanitizer Init done2\n");
   }
 }

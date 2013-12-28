@@ -74,6 +74,28 @@ AsanThreadContext *GetThreadContextByTidLocked(u32 tid) {
 
 // AsanThread implementation.
 
+static atomic_uint16_t threadCount;
+static AsanThread *threads[256];
+
+void AsanThread::destroyDead(void)
+{
+  u16 count = atomic_load(&threadCount, memory_order_relaxed);
+  AsanThread *current = GetCurrentThread();
+
+  if (common_flags()->verbosity >= 1)
+    Report("atfork\n");
+  for (u16 i = 0; i < count; i++) {
+    if (threads[i] && threads[i] != current) {
+      threads[i]->Destroy();
+    }
+  }
+
+  threads[current->id_] = 0;
+  threads[0] = current;
+  current->id_ = 0;
+  atomic_store(&threadCount, 1, memory_order_release);
+}
+
 AsanThread *AsanThread::Create(thread_callback_t start_routine,
                                void *arg) {
   uptr PageSize = GetPageSizeCached();
@@ -82,6 +104,8 @@ AsanThread *AsanThread::Create(thread_callback_t start_routine,
   thread->start_routine_ = start_routine;
   thread->arg_ = arg;
   thread->context_ = 0;
+  thread->id_ = atomic_fetch_add(&threadCount, 1, memory_order_relaxed);
+  threads[thread->id_] = thread;
 
   return thread;
 }
@@ -99,6 +123,7 @@ void AsanThread::Destroy() {
     Report("T%d exited\n", tid());
   }
 
+  threads[id_] = 0;
   malloc_storage().CommitBack();
   if (flags()->use_sigaltstack) UnsetAlternateSignalStack();
   asanThreadRegistry().FinishThread(tid());
