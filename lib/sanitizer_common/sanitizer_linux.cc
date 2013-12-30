@@ -560,6 +560,11 @@ void BlockingMutex::CheckLocked() {
   CHECK_NE(MtxUnlocked, atomic_load(m, memory_order_relaxed));
 }
 
+bool BlockingMutex::IsLocked() {
+  atomic_uint32_t *m = reinterpret_cast<atomic_uint32_t *>(&opaque_storage_);
+  return atomic_load(m, memory_order_relaxed) != MtxUnlocked;
+}
+
 // ----------------- sanitizer_linux.h
 // The actual size of this structure is specified by d_reclen.
 // Note that getdents64 uses a different structure format. We only provide the

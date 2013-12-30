@@ -57,6 +57,8 @@ struct AsanStats {
   void MergeFrom(const AsanStats *stats);
 };
 
+void ClearThreadStatsState();
+
 // Returns stats for GetCurrentThread(), or stats for fake "unknown thread"
 // if GetCurrentThread() returns 0.
 AsanStats &GetCurrentThreadStats();

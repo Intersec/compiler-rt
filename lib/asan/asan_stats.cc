@@ -102,6 +102,12 @@ static void GetAccumulatedStats(AsanStats *stats) {
   }
 }
 
+void ClearThreadStatsState()
+{
+  if (dead_threads_stats_lock.IsLocked())
+    dead_threads_stats_lock.Unlock();
+}
+
 void FlushToDeadThreadStats(AsanStats *stats) {
   BlockingMutexLock lock(&dead_threads_stats_lock);
   dead_threads_stats.MergeFrom(stats);

@@ -82,6 +82,7 @@ void AsanThread::destroyDead(void)
   u16 count = atomic_load(&threadCount, memory_order_relaxed);
   AsanThread *current = GetCurrentThread();
 
+  ClearThreadStatsState();
   if (common_flags()->verbosity >= 1)
     Report("atfork\n");
   for (u16 i = 0; i < count; i++) {

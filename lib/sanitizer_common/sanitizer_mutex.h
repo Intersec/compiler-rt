@@ -78,6 +78,7 @@ class BlockingMutex {
   void Lock();
   void Unlock();
   void CheckLocked();
+  bool IsLocked();
  private:
   uptr opaque_storage_[10];
   uptr owner_;  // for debugging
