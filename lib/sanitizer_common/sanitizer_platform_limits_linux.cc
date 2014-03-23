@@ -52,7 +52,7 @@
 #include <sys/statfs.h>
 #endif
 
-#if !SANITIZER_ANDROID
+#if 0 && !SANITIZER_ANDROID
 #include <linux/perf_event.h>
 #endif
 
@@ -72,7 +72,7 @@ COMPILER_CHECK(struct_kernel_stat64_sz == sizeof(struct stat64));
 
 COMPILER_CHECK(struct_io_event_sz == sizeof(struct io_event));
 
-#if !SANITIZER_ANDROID
+#if 0 && !SANITIZER_ANDROID
 COMPILER_CHECK(sizeof(struct __sanitizer_perf_event_attr) <=
                sizeof(struct perf_event_attr));
 CHECK_SIZE_AND_OFFSET(perf_event_attr, type);

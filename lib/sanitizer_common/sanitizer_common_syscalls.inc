@@ -2703,6 +2703,7 @@ PRE_SYSCALL(syncfs)(long fd) {}
 
 POST_SYSCALL(syncfs)(long res, long fd) {}
 
+#if 0
 PRE_SYSCALL(perf_event_open)(__sanitizer_perf_event_attr *attr_uptr, long pid,
                              long cpu, long group_fd, long flags) {
   if (attr_uptr) PRE_READ(attr_uptr, attr_uptr->size);
@@ -2710,6 +2711,7 @@ PRE_SYSCALL(perf_event_open)(__sanitizer_perf_event_attr *attr_uptr, long pid,
 
 POST_SYSCALL(perf_event_open)(long res, __sanitizer_perf_event_attr *attr_uptr,
                               long pid, long cpu, long group_fd, long flags) {}
+#endif
 
 PRE_SYSCALL(mmap_pgoff)(long addr, long len, long prot, long flags, long fd,
                         long pgoff) {}

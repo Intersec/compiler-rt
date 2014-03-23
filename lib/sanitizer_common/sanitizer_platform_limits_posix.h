@@ -71,11 +71,13 @@ namespace __sanitizer {
   const unsigned struct_kernel_stat64_sz = 104;
 #endif
   const unsigned struct_io_event_sz = 32;
+#if 0
   struct __sanitizer_perf_event_attr {
     unsigned type;
     unsigned size;
     // More fields that vary with the kernel version.
   };
+#endif
 
   extern unsigned struct_utimbuf_sz;
   extern unsigned struct_new_utsname_sz;
@@ -556,7 +558,7 @@ namespace __sanitizer {
   extern unsigned struct_unimapinit_sz;
 #endif
 
-#if !SANITIZER_ANDROID && !SANITIZER_MAC
+#if 0 && !SANITIZER_ANDROID && !SANITIZER_MAC
   extern unsigned struct_sioc_sg_req_sz;
   extern unsigned struct_sioc_vif_req_sz;
 #endif
