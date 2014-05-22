@@ -75,7 +75,7 @@ AsanThreadContext *GetThreadContextByTidLocked(u32 tid) {
 // AsanThread implementation.
 
 static atomic_uint16_t threadCount;
-static AsanThread *threads[256];
+static AsanThread *threads[65536];
 
 void AsanThread::destroyDead(void)
 {
