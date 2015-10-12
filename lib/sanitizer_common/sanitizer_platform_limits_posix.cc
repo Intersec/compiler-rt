@@ -153,13 +153,17 @@
 # include <sys/procfs.h>
 #endif
 #include <sys/user.h>
+#if 0
 #include <sys/ustat.h>
+#endif
 #include <linux/cyclades.h>
 #include <linux/if_eql.h>
 #include <linux/if_plip.h>
 #include <linux/lp.h>
+#if 0
 #include <linux/mroute.h>
 #include <linux/mroute6.h>
+#endif
 #include <linux/scc.h>
 #include <linux/serial.h>
 #include <sys/msg.h>
@@ -430,7 +434,7 @@ namespace __sanitizer {
   unsigned struct_ppp_stats_sz = sizeof(struct ppp_stats);
 #endif  // (SANITIZER_LINUX || SANITIZER_FREEBSD) && !SANITIZER_ANDROID
 
-#if !SANITIZER_ANDROID && !SANITIZER_MAC
+#if 0 && !SANITIZER_ANDROID && !SANITIZER_MAC
   unsigned struct_sioc_sg_req_sz = sizeof(struct sioc_sg_req);
   unsigned struct_sioc_vif_req_sz = sizeof(struct sioc_vif_req);
 #endif
@@ -481,7 +485,7 @@ namespace __sanitizer {
   unsigned IOCTL_TIOCSPGRP = TIOCSPGRP;
   unsigned IOCTL_TIOCSTI = TIOCSTI;
   unsigned IOCTL_TIOCSWINSZ = TIOCSWINSZ;
-#if ((SANITIZER_LINUX || SANITIZER_FREEBSD) && !SANITIZER_ANDROID)
+#if 0 && ((SANITIZER_LINUX || SANITIZER_FREEBSD) && !SANITIZER_ANDROID)
   unsigned IOCTL_SIOCGETSGCNT = SIOCGETSGCNT;
   unsigned IOCTL_SIOCGETVIFCNT = SIOCGETVIFCNT;
 #endif

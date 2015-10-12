@@ -84,11 +84,13 @@ namespace __sanitizer {
   #endif
   const unsigned struct_kernel_stat64_sz = 104;
 #endif
+#if 0
   struct __sanitizer_perf_event_attr {
     unsigned type;
     unsigned size;
     // More fields that vary with the kernel version.
   };
+#endif
 
   extern unsigned struct_epoll_event_sz;
   extern unsigned struct_sysinfo_sz;
@@ -902,7 +904,7 @@ struct __sanitizer_cookie_io_functions_t {
   extern unsigned struct_ppp_stats_sz;
 #endif  // (SANITIZER_LINUX || SANITIZER_FREEBSD) && !SANITIZER_ANDROID
 
-#if !SANITIZER_ANDROID && !SANITIZER_MAC
+#if 0 && !SANITIZER_ANDROID && !SANITIZER_MAC
   extern unsigned struct_sioc_sg_req_sz;
   extern unsigned struct_sioc_vif_req_sz;
 #endif
